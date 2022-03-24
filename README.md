@@ -1,5 +1,6 @@
 # Memo
 
+- [Git](#git)
 - [Find](#find)
 - [Netcat](#netcat)
 - [GDB](#gdb)
@@ -8,6 +9,17 @@
 - [Rust](#rust)
 - [Assembly (x86)](#assembly-x86)
 - [Steganography tools](#steganography-tools)
+
+## Git
+
+## Delete tag
+
+```shell
+# Delete local tag
+git tag --delete TAGNAME
+# Delete remote tag
+git push --delete REMOTE TAGNAME
+```
 
 ## Find
 
