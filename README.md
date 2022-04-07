@@ -5,6 +5,7 @@
 - [Netcat](#netcat)
 - [GDB](#gdb)
 - [Objdump](#objdump)
+- [Strace](#strace)
 - [C / System](#c--system)
 - [Rust](#rust)
 - [Assembly (x86)](#assembly-x86)
@@ -269,6 +270,15 @@ objdump -T
 objdump --disassemble=SYMBOL
 # Disassemble all sections
 objdump -D
+```
+
+## Strace
+
+#### Trace only some syscalls
+
+```shell
+# Comma separated list of syscalls
+strace --trace=LIST PROGRAM ARGS
 ```
 
 ## C / System
