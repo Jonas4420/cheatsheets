@@ -1,6 +1,7 @@
 # Memo
 
 - [Git](#git)
+- [SSH](#ssh)
 - [Find](#find)
 - [Netcat](#netcat)
 - [GDB](#gdb)
@@ -20,6 +21,15 @@
 git tag --delete TAGNAME
 # Delete remote tag
 git push --delete REMOTE TAGNAME
+```
+
+## SSH
+
+#### Suspend session
+
+```shell
+# Needs to be immediatly after new line
+~^Z
 ```
 
 ## Find
