@@ -9,6 +9,7 @@
 - [Strace](#strace)
 - [C / System](#c--system)
 - [Rust](#rust)
+- [Sage](#sage)
 - [Assembly (x86)](#assembly-x86)
 - [Steganography tools](#steganography-tools)
 
@@ -390,6 +391,17 @@ rustc +nightly -Z unstable-options --print target-spec-json --target TARGET
 
 ```shell
 RUSTC_LOG=rustc_codegen_ssa::back::link=info cargo build -vv
+```
+
+## Sage
+
+#### Finite field GF(2)[X]/(P)
+
+```python
+# Create finite field
+K.<X> = GF(2^128, modulus = x^128 + x^127 + x^126 + x^121 + 1)
+# Compute reduction
+X^-128
 ```
 
 ## Assembly (x86)
