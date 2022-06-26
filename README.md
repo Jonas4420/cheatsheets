@@ -6,11 +6,14 @@
 - [Netcat](#netcat)
 - [GDB](#gdb)
 - [Objdump](#objdump)
+- [Readelf](#readelf)
 - [Strace](#strace)
 - [C / System](#c--system)
 - [Rust](#rust)
 - [Sage](#sage)
+- [Android](#android)
 - [Assembly (x86)](#assembly-x86)
+- [Kerberos](#kerberos)
 - [Steganography tools](#steganography-tools)
 
 ## Git
@@ -31,6 +34,24 @@ git push --delete REMOTE TAGNAME
 ```shell
 # Needs to be immediatly after new line
 ~^Z
+```
+
+#### Connection to server through a proxy
+
+When forwarding is allowed:
+```
+Host ${DEST_ENTRY}
+	Hostname "${DEST_HOSTNAME}"
+	User ${USER}
+	ProxyJump ${PROXY_USER}@${PROXY_SERVER}
+```
+
+When forwarding is not allowed:
+```
+Host ${DEST_ENTRY}
+	Hostname "${DEST_HOSTNAME}"
+	User ${USER}
+	ProxyCommand ssh ${PROXY_SERVER} nc -q0 %h %p 2> /dev/null
 ```
 
 ## Find
@@ -283,6 +304,23 @@ objdump --disassemble=SYMBOL
 objdump -D
 ```
 
+## Readelf
+
+#### Get hexdump of symbol
+
+Find section number index for the symbol:
+```shell
+readelf -Ws ${OBJECT} | grep ${SYMBOL}
+# Output will be similar to:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+  9243: 00000000005b4f88    16 OBJECT  LOCAL  DEFAULT    9 ${SYMBOL}
+```
+
+Dump the entire section:
+```shell
+readelf -x${NDX} ${OBJECT}
+```
+
 ## Strace
 
 #### Trace only some syscalls
@@ -294,8 +332,7 @@ strace --trace=LIST PROGRAM ARGS
 
 ## C / System
 
-
-### Disable ASLR
+#### Disable ASLR
 
 ```shell
 # Off
@@ -371,6 +408,53 @@ _vtable_offset = lea 0x94($esi, $eax, 1)
 - take care of magic number as it contains flags (for `vfprintf`,  `0xfbad2185` is working)
 - take care of lock address, as it can change with different systems
 
+#### Cross-compilation for aarch64
+
+Install the following packages:
+- aarch64-linux-gnu-binutils
+- aarch64-linux-gnu-gcc
+- aarch64-linux-gnu-glibc
+- aarch64-linux-gnu-linux-api-headers
+- qemu-user
+
+Set environment:
+```shell
+# C and C++ compilers
+export CC=aarch64-linux-gnu-gcc
+export CXX=aarch64-linux-gnu-g++
+# Force static linkage of libraries
+export CFLAGS=-static
+export CXXFLAGS=-static
+```
+
+Build process as usual:
+```shell
+cmake ..
+make
+```
+
+#### Cross-compilation for Android
+
+Set environment:
+```shell
+# Set Android ABI and targeted platform
+export ANDROID_ABI=arm64-v8a
+export ANDROID_PLATFORM=android-28
+# Set NDK paths (Linux)
+export ANDROID_NDK=${HOME}/Android/sdk/ndk/${NDK_VERSION}/
+# Set NDK paths (macOS)
+export ANDROID_NDK=${HOME}/Library/Android/sdk/ndk/${NDK_VERSION}/
+# CMake toolchain file
+export CMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
+```
+
+Build process as usual:
+```shell
+# Usual build process
+cmake ..
+make
+```
+
 ## Rust
 
 #### Emit assembly
@@ -404,6 +488,34 @@ K.<X> = GF(2^128, modulus = x^128 + x^127 + x^126 + x^121 + 1)
 X^-128
 ```
 
+## Android
+
+#### Run native program on device
+
+Connect ADB to device:
+```shell
+# Add ADB to path
+export PATH=${PATH}:${HOME}/Library/Android/sdk/platform-tools/
+# List devices
+adb devices
+# Check ADB public key fingerprint
+adb pubkey ~/.android/adbkey | awk '{ print $1 }' | openssl base64 -A -a -d | openssl md5 -c | tr a-z A-Z
+```
+
+Push file to device:
+```shell
+adb push ${FILE} /data/local/tmp
+```
+
+Run file
+```shell
+# Run remotely
+adb shell /data/local/tmp/${FILE}
+# Run from device
+adb shell
+cd /data/local/tmp
+./${FILE}
+```
 ## Assembly (x86)
 
 #### Load Effective Address
@@ -426,6 +538,26 @@ cmp X, 0
 
 ```asm
 jne
+```
+
+## Kerberos
+
+#### Update keytab file
+
+```shell
+# List supported ciphers
+klist -e
+# Enter keytab utility
+ktutil
+> reat_kt .keytab
+> list
+> delete_entry ${SLOT}
+> add_entry -password -p ${PRINCIPAL} -k 1 -e ${CIPHER_SUITE}
+> write_kt .keytab.new
+> quit
+# Update keytab file
+mv .keytab .keytab.old
+mv .keytab.new .keytab
 ```
 
 ## Steganography tools
