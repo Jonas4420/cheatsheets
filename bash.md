@@ -3,137 +3,103 @@
 ## History expansion
 
 ```bash
-# Last command
-!!
-# Last command with sudo
-sudo !!
+!!					# Last command
+sudo !!					# Last command with sudo
 
-# Command N
-!N
-# Command -N
-!-N
-# Most recent call to COMMAND
-!<COMMAND>
+!N					# Command N from top of history
+!-N					# Command N from bottom of history
+!<COMMAND>				# Most recent call to COMMAND
 
-# Replace first occurence of FROM to TO
-!!:s/<FROM>/<TO>/
-# Replace all occurences of FROM to TO
-!!:gs/<FROM>/<TO>/
+!*					# All parameters of last command
+!^					# First parameter of last command
+!$					# Last parameter of last command
+
+!!:s/<FROM>/<TO>/			# Replace first occurence of FROM to TO
+!!:gs/<FROM>/<TO>/			# Replace all occurences of FROM to TO
+```
+
+## Special parameters
+
+```bash
+$0					# Name or path of the script (not reliable)
+$1					# Positional parameter
+$#					# Number of positional parameters
+
+# If all the positional parameters are: "a" "b" "c d"
+$*					# Split as a list of words: <a><b><c><d>
+$@					# Split as a list of words: <a><b><c><d>
+"$*"					# Join all the words using IFS character: <a b c d>
+"$@"					# Expand as a list of the individual words: <a><b><c d>
+
+$$					# PID of the current shell
+$!					# PID of the last executed command
+$?					# Exit code of last executed command
 ```
 
 ## Parameter expansion
 
 ```bash
-# Number of parameters
-$?
-# All parameters
-$@
-# Parameter N
-$N
-# Last parameter
-$_
+${foo:VALUE}				# use default VALUE (if foo is unset)
+${foo:-VALUE}				# use default VALUE (if foo is unset or null)
+${foo:+VALUE}				# use alternate VALUE (if foo is not unset or not null)
+${foo:=VALUE}				# assign default VALUE (if foo is unset or null)
 
-# All parameters from previous command
-!*
-# First parameter from previous command
-!$
-# Last parameter from previous command
-!$
-# 
-!$
+${foo:offset:length}			# Substring
+${#foo}					# String length
+
+${foo}					# hello, World!
+${foo^}					# Hello, World!
+${foo^^}				# HELLO, WORLD!
+${foo,}					# hello, World!
+${foo,,}				# hello, world!
+
+${foo/FROM/TO}				# Replace first match
+${foo//FROM/TO}				# Replace all matches
+${foo/#PREFIX/TO}			# Replace prefix
+${foo/%SUFFIX/TO}			# Replace suffix
+
+${file}					# file.tar.gz
+${file#*.}				#      tar.gz
+${file##*.}				#         .gz
+${file%.*}				# file.tar
+${file%%.*}				# file
+
+${file}					# /usr/include/stdio.h
+${file#*/}				#  usr/include/stdio.h
+${file##*/}				#              stdio.h
+${file%/*}				# /usr/include
+${file%%/*}				#
 ```
 
-## Files extensions
+## Array
 
 ```bash
-$ FILE=file.tar.gz
+fruits=("Apple" "Banana" "Orange")	# Declare array
 
-$ echo ${FILE%.*}
-file.tar
-$ echo ${FILE%%.*}
-file
+${fruits[N]}				# Element N
+${fruits[-1]}				# Last element
 
-$ echo ${FILE#*.}
-tar.gz
-$ echo ${FILE##*.}
-gz
+${fruits[@]}				# All elements
+${fruits[@]:offset:length}		# Slice
+${#fruits[@]}				# Array Length
+```
+
+## File manipulation
+
+```bash
+var=$(< ${file})			# Dump file into variable
+> ${file}				# Truncate file
+
+# Read lines of file
+while IFS= read -r line; do
+	echo "$line"
+done < ${file}
 ```
 
 ## Filter process list by regex, except the one greping
 
 ```bash
 $ ps | grep '[p]rocess'
-```
-
-## File manipulation
-
-**/!\ Caution**: `<FILE>` needs to be substituted by the file name, including the matching brackets.
-
-```bash
-# Dump file into variable
-$ var=$(< <FILE>)
-
-# Truncate file
-$ > <FILE>
-
-# Read lines of file
-while IFS= read -r line; do
-	echo "$line"
-done < <FILE>
-```
-
-## Variable manipulation
-
-```bash
-# Default if unset
-${FOO:default}
-# Default if unset or null
-${FOO:-default}
-# Set FOO to default if unset or null, and returns FOO
-${FOO:=default}
-
-# Substring (position, length)
-${FOO:0:3}
-# Substring from right
-${FOO:(-3):3}
-
-# Lower case first letter
-${STR,}
-# Lower case all
-${STR,,}
-# Upper case first letter
-${STR^}
-# Upper case all
-${STR^^}
-
-# Replace first match
-${STR/FROM/TO}
-# Replace all matches
-${STR//FROM/TO}
-
-# Replace prefix
-${STR/#PREFIX/TO}
-# Replace suffix
-${STR/%SUFFIX/TO}
-```
-
-## Array
-
-```bash
-# Declare array
-fruits=("Apple" "Banana" "Orange")
-# Array Length
-${#fruits[@]}
-
-# Element N
-${fruits[N]}
-# Last element
-${fruits[-1]}
-
-# From position N to last
-${fruits[@]:N}
-# Slice (position, length)
-${fruits[@]:N:M}
 ```
 
 ## Join list
@@ -147,6 +113,5 @@ join_array()
 	shift 2 && printf "%s" "$first" "${@/#/${delim}}"
 }
 
-$ join_array ',' a b c d
-a,b,c,d
+join_array ',' a b c d			# a,b,c,d
 ```
