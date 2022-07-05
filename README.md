@@ -7,7 +7,7 @@
 - [Find](find.md)
 - [GDB](gdb.md)
 - [Git](git.md)
-- [Linux kernel](linux.md)
+- [Linux system](linux.md)
 - [Network](network.md)
 - [Programming](programming.md)
 - [Unix tools](unix.md)

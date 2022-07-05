@@ -1,3 +1,11 @@
+# Network
+
+- [dig](#dig)
+- [lsof](#lsof)
+- [nc](#nc)
+- [nmap](#nmap)
+- [whois](#whois)
+
 # dig
 
 ```shell

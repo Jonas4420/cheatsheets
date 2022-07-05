@@ -1,3 +1,25 @@
+# Linux system
+
+- [GNU C Library](#gnu-c-library)
+- [Linux kernel](#linux-kernel)
+- [objdump](#objdump)
+- [readelf](#readelf)
+- [strace](#strace)
+
+# GNU C Library
+
+## Get glibc version
+
+```shell
+getconf GNU_LIBC_VERSION
+```
+
+## Unset pointer randomization for setjmp for ld.so (glibc from 2.4 to 2.22))
+
+```shell
+LD_POINTER_GUARD=0
+```
+
 # Linux kernel
 
 ## ASLR
@@ -24,7 +46,7 @@ kernel.randomize_va_space = 0
 cat /proc/<PID>/fdinfo/<FILE_NO>
 ```
 
-# Objdump
+# objdump
 
 ## List symbols
 
@@ -46,7 +68,7 @@ objdump --disassemble=<SYMBOL>
 objdump --disassemble-all
 ```
 
-# Readelf
+# readelf
 
 ## Check for NX bit
 
@@ -69,23 +91,9 @@ Get the hex dump of the entire section:
 readelf -x<Ndx> <OBJECT>
 ```
 
-# Strace
+# strace
 
 ```shell
 # Filter syscalls
 strace --trace=<SYSCALLS> <COMMAND>
-```
-
-# GNU C Library
-
-## Get glibc version
-
-```shell
-getconf GNU_LIBC_VERSION
-```
-
-## Unset pointer randomization for setjmp for ld.so (glibc from 2.4 to 2.22))
-
-```shell
-LD_POINTER_GUARD=0
 ```

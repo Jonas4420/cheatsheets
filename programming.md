@@ -1,3 +1,8 @@
+# Programming
+
+- [Rust](#rust)
+- [Sage](#sage)
+
 # Rust
 
 ## Emit assembly
