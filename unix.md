@@ -5,6 +5,7 @@
 - [diff](#diff)
 - [Kerberos](#kerberos)
 - [ln](#ln)
+- [Luks](#luks)
 - [rsync](#rsync)
 - [sed](#sed)
 - [ssh](#ssh)
@@ -85,6 +86,23 @@ ln -s <FILE> <SYMLINK>
 # Create symlink on a directory (/!\ omit trailing slashes)
 ln -s <DIR> <SYMLINK>
 ```
+
+# Luks
+
+## Dump
+
+```shell
+# Dump Luks metadata
+sudo cryptsetup luksDump <DEVICE>
+
+# Test passphrase
+cryptsetup open --verbose --test-phassphrase <DEVICE>
+
+# Change passphrase
+sudo cryptsetup luksChangeKey <DEVICE>
+```
+
+## Change passphrase
 
 # rsync
 
