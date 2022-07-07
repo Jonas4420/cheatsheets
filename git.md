@@ -33,6 +33,16 @@ git push -f
 git cherry-pick -x <COMMIT>
 ```
 
+## Delete branch
+
+```shell
+# Delete local branch
+git branch --delete <BRANCH>
+
+# Delete remote branch
+git push --delete <REMOTE> <BRANCH>
+```
+
 ## Delete tag
 
 ```shell
@@ -40,7 +50,7 @@ git cherry-pick -x <COMMIT>
 git tag --delete <TAG>
 
 # Delete remote tag
-git push --delete REMOTE <TAG>
+git push --delete <REMOTE> <TAG>
 ```
 
 ## Show content of last stash
