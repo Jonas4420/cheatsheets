@@ -6,6 +6,7 @@
 - [Kerberos](#kerberos)
 - [ln](#ln)
 - [Luks](#luks)
+- [man](#man)
 - [rsync](#rsync)
 - [sed](#sed)
 - [ssh](#ssh)
@@ -103,6 +104,17 @@ sudo cryptsetup luksChangeKey <DEVICE>
 ```
 
 ## Change passphrase
+
+# man
+
+```shell
+# Open manpage from MANPATH
+man <PAGE>
+
+# Treat argument as a file (it must have a '/' in it)
+man ./<PAGE_FILE>
+man <PAGE_PATH>
+```
 
 # rsync
 
@@ -299,6 +311,9 @@ adduser -m <USER>
 
 # Add another group to user
 usermod -aG <GROUP> <USER>
+
+# Set password as expired (must be changed at next login)
+passwd --expire <USER>
 
 # List current user groups
 groups
