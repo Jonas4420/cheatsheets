@@ -67,6 +67,9 @@ port echo requested
 # Show port infos
 port info <PORT>
 
+# List files installed by a port
+port contents <PORT>
+
 # Show active version of port
 port list <PORT>
 
