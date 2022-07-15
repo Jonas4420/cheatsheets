@@ -90,8 +90,6 @@ ln -s <DIR> <SYMLINK>
 
 # Luks
 
-## Dump
-
 ```shell
 # Dump Luks metadata
 sudo cryptsetup luksDump <DEVICE>
@@ -103,15 +101,15 @@ cryptsetup open --verbose --test-phassphrase <DEVICE>
 sudo cryptsetup luksChangeKey <DEVICE>
 ```
 
-## Change passphrase
-
 # man
 
 ```shell
-# Open manpage from MANPATH
+# Open a manpage
 man <PAGE>
+# Open a manpage at a given section
+man <SECTION> <PAGE>
 
-# Treat argument as a file (it must have a '/' in it)
+# Open a given file (it needs to have a '/' to be treasted as a filepath)
 man ./<PAGE_FILE>
 man <PAGE_PATH>
 ```
